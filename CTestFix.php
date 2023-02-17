@@ -16,9 +16,10 @@ class CTestFix extends CTestTask{
         "GET_QUESTIONS"=>"SELECT * FROM questions WHERE catalog_id=#ID#;",
         "GET_USER"=>"SELECT * FROM users WHERE u_id=#ID#;",
         "GET_USER2"=>"SELECT name, gender FROM users WHERE id=#ID#;",
-        "USER_BILL_INFO"=>"SELECT users.name user_name, users.phone user_phone, sum(orders.subtotal) bill_total, avg(orders.subtotal) bill_avg, max(orders.created) bill_last_date FROM users INNER JOIN orders ON orders.user_id=users.id WHERE users.id=#ID# GROUP BY users.name;",
+        "USER_BILL_INFO"=>"SELECT ANY_VALUE(users.name) user_name, ANY_VALUE(users.phone) user_phone, sum(orders.subtotal) bill_total, avg(orders.subtotal) bill_avg, max(orders.created) bill_last_date FROM users INNER JOIN orders ON orders.user_id=users.id WHERE users.id=#ID# GROUP BY users.name;",
         "CREATE_TABLE"=>"CREATE TABLE IF NOT EXISTS #NAME# (#FIELDS# ,primary key (#PRIMARY_KEY#));",
         "INSERT"=>"INSERT into #TABLE_NAME# (#FIELDS#) values (#VALUES#);",
+        "ONLY_FULL_GROUP_BY"=>"SET SESSION sql_mode='ONLY_FULL_GROUP_BY';",
 
     ];
 	
@@ -179,6 +180,8 @@ class CTestFix extends CTestTask{
 			die('Connect Error (' . $this->db->connect_errno . ') ' . $this->db->connect_error);
 		}
 		
+		$this->query($this->getQuery('ONLY_FULL_GROUP_BY'));
+		
     }
 
     function query($query){
@@ -199,7 +202,7 @@ class CTestFix extends CTestTask{
         return $arRows;
     }
 
-    function getQuery($temp,$arVars){
+    function getQuery($temp,$arVars=[]){
 		$q=$this->arQueriesTemp[$temp];
 		
 		foreach($arVars as $key=>$var){
