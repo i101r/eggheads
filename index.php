@@ -69,8 +69,8 @@ switch($_REQUEST['action']) {
     <body>
         <form action="/" method="GET">
             <input type="text" name="id" value="<?=$_REQUEST['id']?$_REQUEST['id']:'1'?>">
-            <input type="button" id="user-bill-info" value="User Bill Info" >  
             <input type="submit" name="action" value="InitDataBase" >  
+            <input type="button" id="user-bill-info" value="User Bill Info" >  
             <input type="submit" name="action" value="getUser" >  
             <input type="submit" name="action" value="getQuestionsByCat" >  
             <input type="submit" name="action" value="getUserBillInfo" >  
