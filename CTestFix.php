@@ -184,11 +184,12 @@ class CTestFix extends CTestTask{
 		
     }
 
-    function query($query){
+    function query($query,$obj=false){
         $res=$this->db->query($query);
    
 		if (gettype ($res)=='object'){
-		
+			if($obj) return $res;
+
 			while($row=$res->fetch_assoc()){
 				$arRows[]=$row;
 			}
@@ -232,7 +233,7 @@ class CTestFix extends CTestTask{
 
         $q=$this->getQuery('GET_QUESTIONS_USER',["ID"=>$catId]);
 		
-		$arQuestions= $this->query($q);$arQuestions= $this->query($q);
+		$arQuestions= $this->query($q);
 		
 		return $arQuestions;
 		
@@ -246,11 +247,11 @@ class CTestFix extends CTestTask{
 
         $q=$this->getQuery('GET_QUESTIONS',["ID"=>$catId]);
         
-        $arQuestions= $this->query($q);
+        $oReq= $this->query($q,true);
 
-		if(!is_array($arQuestions)) return false;
+		if(!$oReq) return false;
 		
-        foreach($arQuestions as $arQuestion) {
+        while($arQuestion=$oReq->fetch_assoc()) {
             $q=$this->getQuery('GET_USER2',["ID"=>$arQuestion['user_id']]);
             
             $arUser = $this->query($q);
