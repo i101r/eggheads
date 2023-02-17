@@ -28,7 +28,7 @@ class CTestTask {
 
     }
 
-    function getUserBillInfo(){
+    function getUserBillInfo($uid){
             // 3. Напиши SQL-запрос
             // Имеем следующие таблицы:
             // users — контрагенты
