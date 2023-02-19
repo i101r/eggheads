@@ -15,9 +15,9 @@ function printOrderTotal(responseString) {
         total += item.price;
     });
 
-    var msg='Стоимость заказа: ' + total > 0? 'Бесплатно': total + ' руб.';
+    var msg='Стоимость заказа: ' + (total > 0? total : 'Бесплатно' ) + ' руб.';
 
-    console.log( 'Стоимость заказа: ' + total > 0? 'Бесплатно': total + ' руб.');
+    console.log( msg);
 
     return msg;
 }
